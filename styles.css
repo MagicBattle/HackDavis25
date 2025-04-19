@@ -69,7 +69,9 @@ button:hover{
   
   .logo-title{
     display: flex;
-    align-items: center;
+    align-items: center; 
+    color: hsl(199, 92%, 61%);
+    animation: transition 1s ease-in-out forwards;
   } 
 
   #checker{
@@ -87,3 +89,14 @@ button:hover{
     z-index: 0;
 }    
  
+@keyframes transition {
+    from{
+        transform: translateX(-30px);
+        opacity: 0;
+    } 
+
+    to{
+        transform: translateX(0px);
+        opacity: 1;
+    }
+}
