@@ -12,3 +12,10 @@ particlesJS("particles-js", {
     retina_detect: true
 }); 
 
+
+const result = document.getElementById("result")
+
+const button = document.getElementById("submitBtn").addEventListener("click", () => {
+    result.textContent = "Hello World!";
+}); 
+
