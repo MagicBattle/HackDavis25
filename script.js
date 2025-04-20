@@ -48,7 +48,7 @@ function fetchTideData(stationID) {
         .then(responses => {
             let htmlOutput = `<h2 style="font-size: 1.5em;">Station ${stationID} Data</h2>`;
 
-            let temp = null, tide = null, level = null;
+            let temp = null, tideAvailable = false, level = null;
 
             responses.forEach(result => {
                 htmlOutput += `<div class="data-section">
@@ -56,14 +56,19 @@ function fetchTideData(stationID) {
 
                 if (result.error) {
                     htmlOutput += `<p>No data available</p>`;
-                } else if (result.type === 'Tide Prediction' && result.data?.predictions?.length > 0) {
-                    tide = true;
-                    htmlOutput += `<table style="margin: 0 auto; font-size: 0.9em;">
-                        <tr><th>Time</th><th>Height (m)</th></tr>`;
-                    result.data.predictions.slice(0, 5).forEach(pred => {
-                        htmlOutput += `<tr><td>${pred.t}</td><td>${pred.v}</td></tr>`;
-                    });
-                    htmlOutput += `</table>`;
+                } else if (result.type === 'Tide Prediction') {
+                    const tides = result.data?.predictions || [];
+                    if (tides.length > 0) {
+                        tideAvailable = true;
+                        htmlOutput += `<table style="margin: 0 auto; font-size: 0.9em;">
+                            <tr><th>Time</th><th>Height (m)</th></tr>`;
+                        tides.slice(0, 5).forEach(pred => {
+                            htmlOutput += `<tr><td>${pred.t}</td><td>${pred.v}</td></tr>`;
+                        });
+                        htmlOutput += `</table>`;
+                    } else {
+                        htmlOutput += `<p>No data available</p>`;
+                    }
                 } else if (result.data?.data?.length > 0) {
                     const dataPoint = result.data.data[0];
                     if (result.type === 'Water Temperature') temp = parseFloat(dataPoint.v);
@@ -79,18 +84,21 @@ function fetchTideData(stationID) {
             });
 
             let summary = "";
-            if (temp === null && tide === null && level === null) {
-                summary = "No data available. Please use caution if entering the water.";
-            } else if (temp !== null && temp >= 20 && temp <= 26 && tide && level !== null) {
-                summary = "It's a great day to swim. Conditions look ideal.";
-            } else if (temp !== null && temp >= 18 && tide) {
-                summary = "Water is a bit cool, but tide looks safe. Good for a swim.";
+
+            if (temp === null && !tideAvailable && level === null) {
+                summary = "No data is available for this station. It is not recommended to swim without data.";
+            } else if (temp !== null && temp >= 20 && temp <= 26 && tideAvailable && level !== null) {
+                summary = "Conditions are ideal based on all available data. It is a good day to swim.";
+            } else if (temp !== null && temp >= 18 && tideAvailable) {
+                summary = "Water temperature is slightly cool but safe. Tide data is present. Swimming is acceptable.";
             } else if (temp !== null && level !== null) {
-                summary = "Tide data is missing, but based on temperature and water level, today seems okay.";
-            } else if (tide && level !== null) {
-                summary = "Temperature data is missing. Tide and water level look safe.";
+                summary = "Tide data is missing, but based on water temperature and level, swimming appears to be safe.";
+            } else if (tideAvailable && level !== null) {
+                summary = "Water temperature is unavailable, but tide and level look safe. Use caution but swimming may be fine.";
+            } else if (temp !== null && temp < 18) {
+                summary = "Water temperature is cold. Swimming may be uncomfortable or unsafe for extended periods.";
             } else {
-                summary = "Partial data available. Please swim with caution or check another station.";
+                summary = "Some data is missing. Please be cautious and consider checking a different station for more complete data.";
             }
 
             htmlOutput += `<div style="margin-top: 20px; background-color: hsl(0, 0%, 11%); color: hsl(199, 92%, 61%); padding: 15px; border-radius: 10px; box-shadow: 2px 2px 8px hsla(0, 0%, 0%, 0.3); font-size: 1em; text-align: center; max-width: 600px; margin-left: auto; margin-right: auto;">
