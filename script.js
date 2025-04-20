@@ -86,7 +86,7 @@ function fetchTideData(stationID) {
             let summary = "";
 
             if (temp === null && !tideAvailable && level === null) {
-                summary = "No data is available for this station. It is not recommended to swim without data.";
+                summary = "No data available. Swimming not recommended. The station number may be invalid or lacks recent updates.";
             } else if (temp !== null && temp >= 20 && temp <= 26 && tideAvailable && level !== null) {
                 summary = "Conditions are ideal based on all available data. It is a good day to swim.";
             } else if (temp !== null && temp >= 18 && tideAvailable && level === null) {
