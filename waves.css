@@ -108,3 +108,16 @@ button:hover{
     color: hsl(199, 92%, 61%);
     animation: transition 1s ease-in-out forwards;
   } 
+
+
+  @keyframes transition {
+    from{
+        transform: translateX(-30px);
+        opacity: 0;
+    } 
+
+    to{
+        transform: translateX(0px);
+        opacity: 1;
+    }
+}
