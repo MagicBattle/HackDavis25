@@ -86,19 +86,21 @@ function fetchTideData(stationID) {
             let summary = "";
 
             if (temp === null && !tideAvailable && level === null) {
-                summary = "No data is available for this station. It is not recommended to swim without data.";
+                summary = "No data is available for this station. It is not recommended to swim without any information.";
             } else if (temp !== null && temp >= 20 && temp <= 26 && tideAvailable && level !== null) {
-                summary = "Conditions are ideal based on all available data. It is a good day to swim.";
-            } else if (temp !== null && temp >= 18 && tideAvailable) {
-                summary = "Water temperature is slightly cool but safe. Tide data is present. Swimming is acceptable.";
+                summary = "Conditions are ideal based on water temperature, tide, and level. It is a great day to swim.";
+            } else if (temp !== null && temp >= 18 && tideAvailable && level !== null) {
+                summary = "Water temperature is slightly cool, but tide and level look good. Swimming should be safe.";
+            } else if (temp !== null && tideAvailable) {
+                summary = "Water temperature and tide look okay. No water level data. Use some caution.";
             } else if (temp !== null && level !== null) {
                 summary = "Tide data is missing, but based on water temperature and level, swimming appears to be safe.";
             } else if (tideAvailable && level !== null) {
                 summary = "Water temperature is unavailable, but tide and level look safe. Use caution but swimming may be fine.";
             } else if (temp !== null && temp < 18) {
-                summary = "Water temperature is cold. Swimming may be uncomfortable or unsafe for extended periods.";
+                summary = "Water temperature is cold. Swimming may be uncomfortable or risky for long durations.";
             } else {
-                summary = "Some data is missing. Please be cautious and consider checking a different station for more complete data.";
+                summary = "Some data is missing. Please be cautious and consider checking a different station.";
             }
 
             htmlOutput += `<div style="margin-top: 20px; background-color: hsl(0, 0%, 11%); color: hsl(199, 92%, 61%); padding: 15px; border-radius: 10px; box-shadow: 2px 2px 8px hsla(0, 0%, 0%, 0.3); font-size: 1em; text-align: center; max-width: 600px; margin-left: auto; margin-right: auto;">
