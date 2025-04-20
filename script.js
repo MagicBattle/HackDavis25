@@ -39,9 +39,9 @@ function fetchTideData(stationID) {
             .then(response => response.json())
             .then(data => {
                 if (data.error) throw new Error(data.error);
-                return { type: endpoint.name, data: data };
+                return { name: endpoint.name, type: endpoint.type, data: data };
             })
-            .catch(error => ({ type: endpoint.name, error: error.message }))
+            .catch(error => ({ name: endpoint.name, error: error.message }))
     );
 
     Promise.all(fetchPromises)
@@ -52,11 +52,11 @@ function fetchTideData(stationID) {
 
             responses.forEach(result => {
                 htmlOutput += `<div class="data-section">
-                    <h3 style="font-size: 1.25em;">${result.type}</h3>`;
+                    <h3 style="font-size: 1.25em;">${result.name}</h3>`;
 
                 if (result.error) {
                     htmlOutput += `<p>No data available</p>`;
-                } else if (result.type === 'Tide Prediction') {
+                } else if (result.name === 'Tide Prediction') {
                     const tides = result.data?.predictions || [];
                     if (tides.length > 0) {
                         tideAvailable = true;
@@ -71,10 +71,10 @@ function fetchTideData(stationID) {
                     }
                 } else if (result.data?.data?.length > 0) {
                     const dataPoint = result.data.data[0];
-                    if (result.type === 'Water Temperature') temp = parseFloat(dataPoint.v);
-                    if (result.type === 'Water Level') level = parseFloat(dataPoint.v);
+                    if (result.name === 'Water Temperature') temp = parseFloat(dataPoint.v);
+                    if (result.name === 'Water Level') level = parseFloat(dataPoint.v);
                     htmlOutput += `
-                        <p>Value: ${dataPoint.v} ${result.type === "Water Temperature" ? "°C" : result.data.metadata?.units || ''}</p>
+                        <p>Value: ${dataPoint.v} ${result.name === "Water Temperature" ? "°C" : result.data.metadata?.units || ''}</p>
                         <p>Time: ${dataPoint.t}</p>`;
                 } else {
                     htmlOutput += `<p>No data available</p>`;
@@ -86,21 +86,19 @@ function fetchTideData(stationID) {
             let summary = "";
 
             if (temp === null && !tideAvailable && level === null) {
-                summary = "No data is available for this station. It is not recommended to swim without any information.";
+                summary = "No data is available for this station. It is not recommended to swim without data.";
             } else if (temp !== null && temp >= 20 && temp <= 26 && tideAvailable && level !== null) {
-                summary = "Conditions are ideal based on water temperature, tide, and level. It is a great day to swim.";
-            } else if (temp !== null && temp >= 18 && tideAvailable && level !== null) {
-                summary = "Water temperature is slightly cool, but tide and level look good. Swimming should be safe.";
-            } else if (temp !== null && tideAvailable) {
+                summary = "Conditions are ideal based on all available data. It is a good day to swim.";
+            } else if (temp !== null && temp >= 18 && tideAvailable && level === null) {
                 summary = "Water temperature and tide look okay. No water level data. Use some caution.";
-            } else if (temp !== null && level !== null) {
+            } else if (temp !== null && level !== null && !tideAvailable) {
                 summary = "Tide data is missing, but based on water temperature and level, swimming appears to be safe.";
-            } else if (tideAvailable && level !== null) {
+            } else if (tideAvailable && level !== null && temp === null) {
                 summary = "Water temperature is unavailable, but tide and level look safe. Use caution but swimming may be fine.";
             } else if (temp !== null && temp < 18) {
-                summary = "Water temperature is cold. Swimming may be uncomfortable or risky for long durations.";
+                summary = "Water temperature is cold. Swimming may be uncomfortable or unsafe for extended periods.";
             } else {
-                summary = "Some data is missing. Please be cautious and consider checking a different station.";
+                summary = "Some data is missing. Please be cautious and consider checking a different station for more complete data.";
             }
 
             htmlOutput += `<div style="margin-top: 20px; background-color: hsl(0, 0%, 11%); color: hsl(199, 92%, 61%); padding: 15px; border-radius: 10px; box-shadow: 2px 2px 8px hsla(0, 0%, 0%, 0.3); font-size: 1em; text-align: center; max-width: 600px; margin-left: auto; margin-right: auto;">
