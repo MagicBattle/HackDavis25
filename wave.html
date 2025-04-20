@@ -28,10 +28,10 @@
     <form>
         <h1>Beach Safety:</h1>
         <input type="text" id="textBox" name="textBox" placeholder="Enter text here"> <br>
-        <button type="button" id="submitBtn">submit</button>
+        <button type="button" id="submitBtn" onclick="fetchTideData(document.getElementById('textBox').value)">submit</button>
         <p id="result"></p>
     </form>
-
+    
     <script src="particles.min.js"></script>
     <script src="index.js"></script>
     <script src="script.js"></script>
