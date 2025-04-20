@@ -102,7 +102,12 @@ button:hover {
     align-items: center; 
     color: hsl(199, 92%, 61%);
     animation: transition 1s ease-in-out forwards;
-  } 
+  }  
+
+  .logo-title img {
+    animation: transition 1s ease-in-out forwards, waveMotion 2s ease-in-out infinite;
+  }
+  
 
   #checker{
     text-decoration: none;
@@ -130,4 +135,10 @@ button:hover {
         transform: translateX(0px);
         opacity: 1;
     }
+} 
+
+@keyframes waveMotion {
+  0%   { transform: translateX(0); }
+  50%  { transform: translateX(10px); }
+  100% { transform: translateX(0); }
 }
