@@ -5,12 +5,12 @@ import requests
 app = Flask(__name__)
 CORS(app)
 
-def get_noaa_data(station_id, product):
+def get_noaa_data(station_id, product, date="Latest"):
     api_url = "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter"
     params = {
         "station": station_id,
         "product": product,
-        "date": "Latest",
+        "date": date,
         "range": 1,
         "datum": "MLLW",
         "units": "metric",
@@ -18,10 +18,15 @@ def get_noaa_data(station_id, product):
         "time_zone": "lst_ldt"
     }
 
+    if product == "predictions":
+        params["interval"] = "h"
+        params["date"] = "today"
+        del params["range"]
+
     response = requests.get(api_url, params=params)
     print(f"Response status: {response.status_code}")
     print(f"Full URL: {response.url}")
-    
+
     if response.status_code == 200:
         return response.json()
     else:
@@ -37,7 +42,7 @@ def get_tide_prediction_route(station_id):
 
 @app.route('/api/water-temperature/<station_id>', methods=['GET'])
 def get_water_temp_route(station_id):
-    return jsonify(get_noaa_data(station_id, "water_temperature")) 
+    return jsonify(get_noaa_data(station_id, "water_temperature"))
 
 @app.route('/api/stations', methods=['GET'])
 def get_station_list():
@@ -46,7 +51,6 @@ def get_station_list():
         return jsonify(response.json())
     else:
         return {"error": "Failed to fetch station metadata"}, 500
-
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=10000)
