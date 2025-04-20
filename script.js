@@ -1,6 +1,6 @@
 
 function fetchTideData(stationID) {
-    const url = 'https://hackdavis25.onrender.com';
+    const url = 'https://hackdavis25.onrender.com/api';
 
     const endpoints = [
         { type: 'water-level', name: 'Water Level' },
