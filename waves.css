@@ -58,20 +58,22 @@ label{
     font-weight: bold;
 } 
 
-button{
-    margin-top: 15px;
-    background-color: hsl(115, 78%, 62%);
-    color: snow;
-    font-size: 1.5em;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 25px;
-    cursor: pointer;
-} 
+button {
+  margin-top: 15px;
+  background-color: hsl(199, 92%, 61%);
+  color: black;
+  font-size: 1.5em;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
 
-button:hover{
-    background-color:  hsl(115, 78%, 72%);
-} 
+button:hover {
+  background-color: hsl(199, 92%, 75%);
+}
+
 
 #result {
   font-size: 1em;
@@ -114,12 +116,12 @@ button:hover{
   
   .navbar nav ul li a {
     text-decoration: none;
-    color: yellow;
+    color: hsl(199, 92%, 61%);
     font-weight: bold;
   }
   
   .navbar nav ul li a:hover {
-    color: lightyellow;
+    color: hsl(199, 92%, 75%);
   }
   
   .container {
@@ -141,9 +143,14 @@ button:hover{
     margin-bottom: 10px;
     position: relative;
     z-index: 2;
-    background-color: #1a1a1a;
-    color: white;
-    border: 2px solid hsla(0, 0%, 0%, 0.811);
+    background-color: hsl(0, 0%, 24%);
+    color: hsl(0, 0%, 100%);
+    border: 2px solid hsla(0, 0%, 0%, 0.70);
+} 
+
+#caliSelect {
+  font-size: 1em;
+  color: hsl(0, 0%, 82%);
 }
 
 

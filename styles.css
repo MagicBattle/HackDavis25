@@ -9,6 +9,7 @@ body, html {
 
 h1{
     color: hsl(199, 92%, 61%);
+
 } 
 
 #box{
@@ -23,16 +24,40 @@ h1{
     z-index: 2;
 }   
 
-button {
-    border: none;
-    border-radius: 25px;
-    background-color: hsl(0, 1%, 39%);
-    padding: 20px;
-}  
-
-button:hover{
-    background-color: hsl(71, 74%, 80%);
+.description {
+  color: hsl(0, 0%, 82%);
+  font-size: 1em;
+  margin-bottom: 20px;
+  line-height: 1.4em;
+  text-align: center;
 }
+
+#external {
+  text-decoration: none;
+  color: rgb(59, 59, 59);
+  font-weight: bold;
+}
+
+
+button {
+  border: none;
+  border-radius: 25px;
+  background-color: hsl(199, 92%, 61%);
+  padding: 15px 25px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button a {
+  text-decoration: none;
+  color: black;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: hsl(199, 92%, 75%);
+}
+
 
 .navbar {
     display: flex;
@@ -59,13 +84,14 @@ button:hover{
   
   .navbar nav ul li a {
     text-decoration: none;
-    color: yellow;
+    color: hsl(199, 92%, 61%);
     font-weight: bold;
   }
   
   .navbar nav ul li a:hover {
-    color: lightyellow;
+    color: hsl(199, 92%, 75%);
   }
+  
   
   .container {
     padding-top: 120px; /* Push page content below the fixed navbar */
@@ -82,7 +108,8 @@ button:hover{
     text-decoration: none;
     color: rgb(59, 59, 59);
     font-weight: bold;
-  }
+  } 
+
 
 #particles-js {
     position: fixed;
