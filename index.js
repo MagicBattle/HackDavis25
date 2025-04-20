@@ -13,9 +13,9 @@ particlesJS("particles-js", {
 }); 
 
 
-const result = document.getElementById("result")
+// const result = document.getElementById("result")
 
-const button = document.getElementById("submitBtn").addEventListener("click", () => {
-    result.textContent = "Hello World!";
-}); 
+// const button = document.getElementById("submitBtn").addEventListener("click", () => {
+//     result.textContent = "Hello World!";
+// }); 
 
